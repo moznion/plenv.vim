@@ -28,16 +28,19 @@ func! g:plenv(commands)
   " Use defined functions
   if exists('*g:plenv_' . a:commands[0])
     try
-      echo function('g:plenv_' . a:commands[0])(a:commands[1])
+      let l:ret_msg = function('g:plenv_' . a:commands[0])(a:commands[1])
     catch
-      echo function('g:plenv_' . a:commands[0])()
+      let l:ret_msg = function('g:plenv_' . a:commands[0])()
     endtry
-    return
+    echo l:ret_msg
+    return l:ret_msg
   endif
 
   " Execute plenv command with some args
   let l:command = remove(a:commands, 0)
-  echo system('plenv ' . l:command . ' ' . s:_serialize_args(a:commands))
+  let l:ret_msg = system('plenv ' . l:command . ' ' . s:_serialize_args(a:commands))
+  echo l:ret_msg
+  return l:ret_msg
 endf
 
 func! g:plenv_list()
